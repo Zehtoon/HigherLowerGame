@@ -1,0 +1,112 @@
+import random
+from art import logo, vs
+# My database
+people =  {
+    "Neymar" : ["a football player from brazil", 204],
+    "Messi" : ["a football player from Argentina", 429],
+    "Cbum" : ["a bodybuilder from Canada", 15],
+    "taha essou": ["a mororccan youtuber", 2.7],
+    "snoop dog": ["a rapper from the U.S", 79.2],
+    "billie eilish": ["a rapper from the U.S", 108],
+    "eminem": ["a rapper from the U.S", 38],
+    "leonardo dicaprio": ["an actor from the U.S", 56.7],
+    "sterling": ["a football player", 10.3],
+    "Cristiano Ronaldo": ["a football player from Portugal", 548],
+    "Ariana Grande ": ["Musician and actress", 183],
+    "Dwayne Johnson ": ["Actor and professional wrestler", 181],
+    "Selena Gomez": ["Musician and actress", 174],
+    "Kylie Jenner": ["Reality TV personality and a billionaire", 172],
+    "Beyonce": ["Musician", 145],
+    "National Geographic": ["Magazine", 135],
+    "Justin Bieber": ["Musician", 133],
+    "Taylor Swift": ["Musician", 131],
+    "Jennifer Lopez": ["Musician and actress", 119],
+    "Nike": ["Sportswear multinational", 109],
+    "Kevin Hart": ["Comedian and actor", 89],
+    "Drake": ["Musician", 65],
+    "Shakira": ["Musician from Colombia", 66],
+    
+}
+
+# a function to display the options from which the user has to choose from
+def display(fname, sname) :
+    print("Who do you think has more followers. ")
+    fdetails = people[fname] [0]
+    sdetails = people[sname] [0]
+    print(f"{fname} : {fdetails}" )
+    print(vs)
+    print(f"{sname} : {sdetails}")
+
+#  function to avoid having two duplicated choices at the same time
+def idenChecker(fname, sname):
+    while fname == sname:
+        sname = random.choice(list(people))
+    return fname, sname
+
+#  function to pick the choices from the database randomly
+def random_picker():
+    f_guy, f_details = random.choice(list(people.items()))
+    return f_guy, f_details
+
+#  function to check the user's input
+def choice(picked, fname, sname, visited):
+    answer = {}
+    
+    if picked == "a":
+        answer[fname] = people[fname]
+        comp = int(people[sname][1])
+        x = fname
+        visited.append(sname)
+        
+    else:
+        answer[sname] = people[sname]
+        comp = int(people[fname][1])
+        x = sname
+        visited.append(fname)
+    return answer, x, comp, visited
+print(logo)
+fname = random.choice(list(people))
+sname = random.choice(list(people))
+list_of_data = list(people.keys())
+
+# idenChecker was not working because we did not put a return statement at the end of the function
+fname, sname = idenChecker(fname, sname)
+
+display(fname, sname)
+picked = input(f"Choose 'a' for {fname}, and 'b' for {sname}: ").lower()
+
+answer = {}
+visited = []
+answer, x, comp, visited= choice(picked, fname, sname, visited)
+if x == fname:
+    visited.append(sname)
+else:
+    visited.append(fname)
+
+score = 0
+while answer[x][1]> comp:
+    score =+ 1
+    print(f"That's right, current Score: {score}")
+    print("")
+    y = x
+    sname = random.choice(list(people))
+    while sname in visited:
+        sname = random.choice(list(people))
+    y, sname = idenChecker(y, sname)
+    display(y, sname)
+    picked = input(f"Choose 'a' for {x}, and 'b' for {sname}: ").lower()
+    if visited == list_of_data :
+        print("YOU WON!!!")
+        exit()
+    answer, x, comp, visited = choice(picked, y, sname, visited)
+    if x == y :
+        visited.append(sname)
+    else : 
+        visited.append(x)
+    
+else:
+    print("HMMMM....I got you, that was wrong!!")
+
+
+
+
